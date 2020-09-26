@@ -1,6 +1,6 @@
 # yaarxiv backend benchmark
 
-This is a simple performance benchmark for alternative implementations for the same yaarxiv backend endpoint `/articles/{articleId}` ([swagger documentation](http://39.104.70.44:3000/swagger/static/index.html#/default/get_articles)).
+This is a simple performance benchmark for alternative implementations for the same yaarxiv backend endpoint `/articles/{articleId}` ([swagger documentation](http://39.104.70.44:3000/swagger/static/index.html#/default/get_articles__articleId_)).
 
 This API is a relatively complex query composed of the following three queries:
 
@@ -162,3 +162,9 @@ Req/Bytes counts sampled once per second.
 
 10k requests in 20.08s, 4.44 MB read
 ```
+
+# License
+
+The implementations inside this repo are licensed under MIT. 
+
+The original fastify + TypeScript implemented is licensed as specified in the original repo. 
