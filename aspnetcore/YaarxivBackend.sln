@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YaarxivBackend", "YaarxivBackend\YaarxivBackend.csproj", "{13AD2D68-1258-4EF4-A847-2E409795C025}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13AD2D68-1258-4EF4-A847-2E409795C025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13AD2D68-1258-4EF4-A847-2E409795C025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13AD2D68-1258-4EF4-A847-2E409795C025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13AD2D68-1258-4EF4-A847-2E409795C025}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D55970C2-33F2-4FE6-8C0A-A0E2840762E1}
+	EndGlobalSection
+EndGlobal
