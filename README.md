@@ -105,7 +105,7 @@ Req/Bytes counts sampled once per second.
 11k requests in 20.07s, 5.69 MB read
 ```
 
-## Spring Boot
+## Spring Boot + Hibernate JPA
 
 JWT Auth is NOT implemented.
 
