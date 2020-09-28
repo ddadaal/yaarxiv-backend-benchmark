@@ -5,12 +5,12 @@ This is a simple performance benchmark for alternative implementations for the s
 This API is a relatively complex query composed of the following three queries:
 
 1. Query the `article` with param {articleId}
-2. Query all the `revisions` of the article (one-to-many relation)
+2. Query the `revisionNumber` and `time` of all the `revisions` of the article (one-to-many relation)
 3. Query the relatest (or specified) `revision` of the article joined with the related `pdfUpload` (one-to-one relation).
 
 All relations are implemented with **foreign constraints** for easier development.
 
-The query design is not optimal: for example, there is no need in the 2nd step to query all revisions of article. There is also no manual fine-tuning of configurations, parameters etc. All these are default from the stack. This is also not a strict controlled benchmark.
+The query design is not optimal. There is no manual fine-tuning of configurations, parameters etc. All these are default from the stack. This is also not a strict controlled benchmark.
 
 Despite all the flaws, the results are still to some extent meaningful for performances of different techstacks.
 
@@ -44,28 +44,28 @@ The built version is tested (i.e. not running directly with `ts-node`.)
 | -- | -- |
 | NodeJS | v12.18.4 |
 | fastify | 3.4.1 |
-| commit | [0564c4d](https://github.com/ddadaal/yaarxiv/commit/0564c4dd3b7df71e6d453eb91d6d7a2fcef521df) |
+| commit | [a8ae90a](https://github.com/ddadaal/yaarxiv/commit/a8ae90a817e56d0e9f6017d0e1ba2d2d53abbcb6) |
 
 ```
 Running 20s test @ http://localhost:3000/articles/2
 10 connections
 
-┌─────────┬───────┬───────┬───────┬───────┬──────────┬─────────┬───────┐
-│ Stat    │ 2.5%  │ 50%   │ 97.5% │ 99%   │ Avg      │ Stdev   │ Max   │
-├─────────┼───────┼───────┼───────┼───────┼──────────┼─────────┼───────┤
-│ Latency │ 11 ms │ 13 ms │ 21 ms │ 26 ms │ 13.95 ms │ 3.32 ms │ 78 ms │
-└─────────┴───────┴───────┴───────┴───────┴──────────┴─────────┴───────┘
-┌───────────┬────────┬────────┬────────┬────────┬────────┬───────┬────────┐
-│ Stat      │ 1%     │ 2.5%   │ 50%    │ 97.5%  │ Avg    │ Stdev │ Min    │
-├───────────┼────────┼────────┼────────┼────────┼────────┼───────┼────────┤
-│ Req/Sec   │ 400    │ 400    │ 730    │ 785    │ 693.2  │ 95.55 │ 400    │
-├───────────┼────────┼────────┼────────┼────────┼────────┼───────┼────────┤
-│ Bytes/Sec │ 239 kB │ 239 kB │ 436 kB │ 469 kB │ 414 kB │ 57 kB │ 239 kB │
-└───────────┴────────┴────────┴────────┴────────┴────────┴───────┴────────┘
+┌─────────┬───────┬───────┬───────┬───────┬──────────┬─────────┬────────┐
+│ Stat    │ 2.5%  │ 50%   │ 97.5% │ 99%   │ Avg      │ Stdev   │ Max    │
+├─────────┼───────┼───────┼───────┼───────┼──────────┼─────────┼────────┤
+│ Latency │ 11 ms │ 13 ms │ 21 ms │ 25 ms │ 13.74 ms │ 3.65 ms │ 105 ms │
+└─────────┴───────┴───────┴───────┴───────┴──────────┴─────────┴────────┘
+┌───────────┬────────┬────────┬────────┬────────┬────────┬─────────┬────────┐
+│ Stat      │ 1%     │ 2.5%   │ 50%    │ 97.5%  │ Avg    │ Stdev   │ Min    │
+├───────────┼────────┼────────┼────────┼────────┼────────┼─────────┼────────┤
+│ Req/Sec   │ 390    │ 390    │ 738    │ 808    │ 702.85 │ 102.68  │ 390    │
+├───────────┼────────┼────────┼────────┼────────┼────────┼─────────┼────────┤
+│ Bytes/Sec │ 233 kB │ 233 kB │ 441 kB │ 483 kB │ 420 kB │ 61.3 kB │ 233 kB │
+└───────────┴────────┴────────┴────────┴────────┴────────┴─────────┴────────┘
 
 Req/Bytes counts sampled once per second.
 
-14k requests in 20.04s, 8.28 MB read
+14k requests in 20.04s, 8.39 MB read
 ```
 
 ## ASP.NET Core
@@ -87,22 +87,22 @@ App is running on local IIS Express server, not inside docker.
 Running 20s test @ http://localhost:5000/articles/2
 10 connections
 
-┌─────────┬───────┬───────┬───────┬───────┬──────────┬─────────┬─────────┐
-│ Stat    │ 2.5%  │ 50%   │ 97.5% │ 99%   │ Avg      │ Stdev   │ Max     │
-├─────────┼───────┼───────┼───────┼───────┼──────────┼─────────┼─────────┤
-│ Latency │ 13 ms │ 15 ms │ 24 ms │ 28 ms │ 18.01 ms │ 64.3 ms │ 2139 ms │
-└─────────┴───────┴───────┴───────┴───────┴──────────┴─────────┴─────────┘
+┌─────────┬───────┬───────┬───────┬───────┬──────────┬──────────┬─────────┐
+│ Stat    │ 2.5%  │ 50%   │ 97.5% │ 99%   │ Avg      │ Stdev    │ Max     │
+├─────────┼───────┼───────┼───────┼───────┼──────────┼──────────┼─────────┤
+│ Latency │ 13 ms │ 16 ms │ 27 ms │ 32 ms │ 19.11 ms │ 69.75 ms │ 2245 ms │
+└─────────┴───────┴───────┴───────┴───────┴──────────┴──────────┴─────────┘
 ┌───────────┬─────┬──────┬────────┬────────┬────────┬─────────┬────────┐
 │ Stat      │ 1%  │ 2.5% │ 50%    │ 97.5%  │ Avg    │ Stdev   │ Min    │
 ├───────────┼─────┼──────┼────────┼────────┼────────┼─────────┼────────┤
-│ Req/Sec   │ 0   │ 0    │ 606    │ 641    │ 541.25 │ 184.9   │ 485    │
+│ Req/Sec   │ 0   │ 0    │ 574    │ 620    │ 510.95 │ 176.82  │ 395    │
 ├───────────┼─────┼──────┼────────┼────────┼────────┼─────────┼────────┤
-│ Bytes/Sec │ 0 B │ 0 B  │ 319 kB │ 337 kB │ 285 kB │ 97.2 kB │ 255 kB │
+│ Bytes/Sec │ 0 B │ 0 B  │ 317 kB │ 343 kB │ 283 kB │ 97.8 kB │ 218 kB │
 └───────────┴─────┴──────┴────────┴────────┴────────┴─────────┴────────┘
 
 Req/Bytes counts sampled once per second.
 
-11k requests in 20.07s, 5.69 MB read
+10k requests in 20.08s, 5.65 MB read
 ```
 
 ## Spring Boot + Hibernate JPA
@@ -120,23 +120,23 @@ JWT Auth is NOT implemented.
 Running 20s test @ http://localhost:8080/articles/2
 10 connections
 
-┌─────────┬───────┬───────┬───────┬───────┬──────────┬──────────┬────────┐
-│ Stat    │ 2.5%  │ 50%   │ 97.5% │ 99%   │ Avg      │ Stdev    │ Max    │
-├─────────┼───────┼───────┼───────┼───────┼──────────┼──────────┼────────┤
-│ Latency │ 13 ms │ 17 ms │ 41 ms │ 56 ms │ 20.17 ms │ 14.78 ms │ 412 ms │
-└─────────┴───────┴───────┴───────┴───────┴──────────┴──────────┴────────┘
-┌───────────┬────────┬────────┬────────┬────────┬────────┬─────────┬────────┐
-│ Stat      │ 1%     │ 2.5%   │ 50%    │ 97.5%  │ Avg    │ Stdev   │ Min    │
-├───────────┼────────┼────────┼────────┼────────┼────────┼─────────┼────────┤
-│ Req/Sec   │ 227    │ 227    │ 485    │ 627    │ 484.3  │ 101.56  │ 227    │
-├───────────┼────────┼────────┼────────┼────────┼────────┼─────────┼────────┤
-│ Bytes/Sec │ 123 kB │ 123 kB │ 262 kB │ 338 kB │ 261 kB │ 54.8 kB │ 123 kB │
-└───────────┴────────┴────────┴────────┴────────┴────────┴─────────┴────────┘
+┌─────────┬───────┬───────┬───────┬───────┬──────────┬─────────┬────────┐
+│ Stat    │ 2.5%  │ 50%   │ 97.5% │ 99%   │ Avg      │ Stdev   │ Max    │
+├─────────┼───────┼───────┼───────┼───────┼──────────┼─────────┼────────┤
+│ Latency │ 13 ms │ 16 ms │ 33 ms │ 41 ms │ 17.64 ms │ 13.5 ms │ 413 ms │
+└─────────┴───────┴───────┴───────┴───────┴──────────┴─────────┴────────┘
+┌───────────┬────────┬────────┬────────┬────────┬────────┬────────┬────────┐
+│ Stat      │ 1%     │ 2.5%   │ 50%    │ 97.5%  │ Avg    │ Stdev  │ Min    │
+├───────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+│ Req/Sec   │ 246    │ 246    │ 577    │ 659    │ 551.4  │ 111.05 │ 246    │
+├───────────┼────────┼────────┼────────┼────────┼────────┼────────┼────────┤
+│ Bytes/Sec │ 140 kB │ 140 kB │ 328 kB │ 375 kB │ 313 kB │ 63 kB  │ 140 kB │
+└───────────┴────────┴────────┴────────┴────────┴────────┴────────┴────────┘
 
 Req/Bytes counts sampled once per second.
 
-10k requests in 20.06s, 5.23 MB read
-26 errors (0 timeouts)
+11k requests in 20.05s, 6.26 MB read
+28 errors (0 timeouts)
 ```
 
 ### Netty
@@ -148,19 +148,19 @@ Running 20s test @ http://localhost:8080/articles/2
 ┌─────────┬───────┬───────┬───────┬───────┬──────────┬──────────┬────────┐
 │ Stat    │ 2.5%  │ 50%   │ 97.5% │ 99%   │ Avg      │ Stdev    │ Max    │
 ├─────────┼───────┼───────┼───────┼───────┼──────────┼──────────┼────────┤
-│ Latency │ 12 ms │ 15 ms │ 37 ms │ 44 ms │ 19.29 ms │ 17.42 ms │ 601 ms │
+│ Latency │ 11 ms │ 14 ms │ 33 ms │ 40 ms │ 17.91 ms │ 16.75 ms │ 565 ms │
 └─────────┴───────┴───────┴───────┴───────┴──────────┴──────────┴────────┘
-┌───────────┬─────────┬─────────┬────────┬────────┬────────┬─────────┬─────────┐
-│ Stat      │ 1%      │ 2.5%    │ 50%    │ 97.5%  │ Avg    │ Stdev   │ Min     │
-├───────────┼─────────┼─────────┼────────┼────────┼────────┼─────────┼─────────┤
-│ Req/Sec   │ 164     │ 164     │ 517    │ 584    │ 506.3  │ 85.69   │ 164     │
-├───────────┼─────────┼─────────┼────────┼────────┼────────┼─────────┼─────────┤
-│ Bytes/Sec │ 71.9 kB │ 71.9 kB │ 227 kB │ 256 kB │ 222 kB │ 37.5 kB │ 71.8 kB │
-└───────────┴─────────┴─────────┴────────┴────────┴────────┴─────────┴─────────┘
+┌───────────┬─────────┬─────────┬────────┬────────┬────────┬───────┬─────────┐
+│ Stat      │ 1%      │ 2.5%    │ 50%    │ 97.5%  │ Avg    │ Stdev │ Min     │
+├───────────┼─────────┼─────────┼────────┼────────┼────────┼───────┼─────────┤
+│ Req/Sec   │ 204     │ 204     │ 567    │ 607    │ 544.1  │ 85.93 │ 204     │
+├───────────┼─────────┼─────────┼────────┼────────┼────────┼───────┼─────────┤
+│ Bytes/Sec │ 95.1 kB │ 95.1 kB │ 264 kB │ 283 kB │ 254 kB │ 40 kB │ 95.1 kB │
+└───────────┴─────────┴─────────┴────────┴────────┴────────┴───────┴─────────┘
 
 Req/Bytes counts sampled once per second.
 
-10k requests in 20.08s, 4.44 MB read
+11k requests in 20.06s, 5.07 MB read
 ```
 
 # License

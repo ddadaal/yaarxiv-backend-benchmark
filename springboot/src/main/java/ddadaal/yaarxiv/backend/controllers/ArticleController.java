@@ -38,7 +38,7 @@ class ArticleRevision {
 @AllArgsConstructor
 class ArticleInfo {
     public String title;
-    public List<String> authors;
+    public List<Author> authors;
     @JsonProperty("abstract")
     public String articleAbstract;
     public List<String> keywords;
@@ -115,9 +115,7 @@ public class ArticleController {
                     new ObjectMapper().readValue(
                         targetRevision.getAuthors(),
                         new TypeReference<ArrayList<Author>>() {}
-                    ).stream()
-                        .map(Author::getName)
-                        .collect(Collectors.toList()),
+                    ),
                     targetRevision.getAbstractContent(),
                     Arrays.asList(targetRevision.getKeywords().split(",")),
                     pdf.getLink(),

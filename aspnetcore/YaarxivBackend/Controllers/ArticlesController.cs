@@ -24,7 +24,7 @@ namespace YaarxivBackend.Controllers
     public class ArticleInfo
     {
         public string Title { get; set; }
-        public IEnumerable<string> Authors { get; set; }
+        public IEnumerable<Author> Authors { get; set; }
         public string Abstract { get; set; }
         public IEnumerable<string> Keywords { get; set; }
         public string Category { get; set; }
@@ -79,7 +79,11 @@ namespace YaarxivBackend.Controllers
                 return NotFound(new { NotFound = "article" });
             }
 
-            var articleRevisionInfo = article.ArticleRevision.OrderByDescending(x => x.Time);
+            var articleRevisionInfo = article.ArticleRevision.OrderByDescending(x => x.Time).Select(x => new
+            {
+                x.Time,
+                x.RevisionNumber,
+            });
 
             var targetRevisionNumber = query.RevisionNumber ?? article.LatestRevisionNumber;
 
@@ -92,6 +96,12 @@ namespace YaarxivBackend.Controllers
                 return NotFound(new { NotFound = "revision" });
             }
 
+            var authors = JsonSerializer.Deserialize<IList<Author>>(targetRevision.Authors, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
+
+
             return new Response
             {
                 Article = new GetArticleResult
@@ -101,7 +111,7 @@ namespace YaarxivBackend.Controllers
                     CurrentRevision = new ArticleInfo
                     {
                         Abstract = targetRevision.Abstract,
-                        Authors = JsonSerializer.Deserialize<List<Author>>(targetRevision.Authors).Select(x => x.Name),
+                        Authors = authors,
                         Category = targetRevision.Category,
                         Keywords = targetRevision.Keywords.Split(","),
                         PdfLink = targetRevision.Pdf.Link,
